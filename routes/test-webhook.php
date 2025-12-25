@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\Paiement;
-use App\Services\StripeService;
+use app\Models\Paiement;
+use app\Services\StripeService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test-webhook/{paiement_id}', function ($paiement_id) {
     $paiement = Paiement::find($paiement_id);
-    
+
     if (!$paiement) {
         return response()->json(['error' => 'Paiement non trouvé'], 404);
     }

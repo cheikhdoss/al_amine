@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Patient;
-use App\Models\Praticien;
-use App\Models\DemandeRdv;
-use App\Models\Specialite;
+use app\Models\User;
+use app\Models\Patient;
+use app\Models\Praticien;
+use app\Models\DemandeRdv;
+use app\Models\Specialite;
 use Carbon\Carbon;
 
 class DemandeRdvSeeder extends Seeder

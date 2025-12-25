@@ -1,23 +1,23 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
-use App\Http\Controllers\Patient\DemandeRdvController;
-use App\Http\Controllers\Patient\ProfileController as PatientProfileController;
-use App\Http\Controllers\Patient\DossierMedicalController;
-use App\Http\Controllers\Patient\NotificationController as PatientNotificationController;
-use App\Http\Controllers\Praticien\DashboardController as PraticienDashboardController;
-use App\Http\Controllers\Praticien\DisponibiliteController;
-use App\Http\Controllers\Praticien\ConsultationController;
-use App\Http\Controllers\Praticien\RendezVousController;
-use App\Http\Controllers\Secretaire\DashboardController as SecretaireDashboardController;
-use App\Http\Controllers\Secretaire\FileAttenteController;
-use App\Http\Controllers\Secretaire\RendezVousController as SecretaireRendezVousController;
-use App\Http\Controllers\Secretaire\ReminderController;
-use App\Http\Controllers\Secretaire\ProfileController as SecretaireProfileController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\PaydunyaWebhookController;
+use app\Http\Controllers\ProfileController;
+use app\Http\Controllers\Patient\DashboardController as PatientDashboardController;
+use app\Http\Controllers\Patient\DemandeRdvController;
+use app\Http\Controllers\Patient\ProfileController as PatientProfileController;
+use app\Http\Controllers\Patient\DossierMedicalController;
+use app\Http\Controllers\Patient\NotificationController as PatientNotificationController;
+use app\Http\Controllers\Praticien\DashboardController as PraticienDashboardController;
+use app\Http\Controllers\Praticien\DisponibiliteController;
+use app\Http\Controllers\Praticien\ConsultationController;
+use app\Http\Controllers\Praticien\RendezVousController;
+use app\Http\Controllers\Secretaire\DashboardController as SecretaireDashboardController;
+use app\Http\Controllers\Secretaire\FileAttenteController;
+use app\Http\Controllers\Secretaire\RendezVousController as SecretaireRendezVousController;
+use app\Http\Controllers\Secretaire\ReminderController;
+use app\Http\Controllers\Secretaire\ProfileController as SecretaireProfileController;
+use app\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use app\Http\Controllers\Admin\UserController;
+use app\Http\Controllers\PaydunyaWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -50,7 +50,7 @@ Route::get('/dashboard', function () {
 // Routes PATIENT
 Route::middleware(['auth', 'role:PATIENT'])->prefix('patient')->name('patient.')->group(function () {
     Route::get('/dashboard', [PatientDashboardController::class, 'index'])->name('dashboard');
-    
+
     // Profil
     Route::get('/profile', [PatientProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/personal', [PatientProfileController::class, 'updatePersonalInfo'])->name('profile.update.personal');
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'role:PATIENT'])->prefix('patient')->name('patient.')
     Route::post('/profile/photo', [PatientProfileController::class, 'updatePhoto'])->name('profile.update.photo');
     Route::delete('/profile/photo', [PatientProfileController::class, 'deletePhoto'])->name('profile.delete.photo');
     Route::patch('/profile/password', [PatientProfileController::class, 'updatePassword'])->name('profile.update.password');
-    
+
     // Dossier médical
     Route::get('/dossier-medical', [DossierMedicalController::class, 'index'])->name('dossier-medical');
     Route::get('/dossier-medical/consultation/{consultation}', [DossierMedicalController::class, 'showConsultation'])->name('dossier-medical.consultation');
@@ -68,14 +68,14 @@ Route::middleware(['auth', 'role:PATIENT'])->prefix('patient')->name('patient.')
     Route::get('/dossier-medical/document/{document}/download', [DossierMedicalController::class, 'downloadDocument'])->name('dossier-medical.document.download');
     Route::get('/dossier-medical/allergies-antecedents', [DossierMedicalController::class, 'allergiesAntecedents'])->name('dossier-medical.allergies-antecedents');
     Route::patch('/dossier-medical/allergies-antecedents', [DossierMedicalController::class, 'updateAllergiesAntecedents'])->name('dossier-medical.allergies-antecedents.update');
-    
+
     // Notifications
     Route::get('/notifications', [PatientNotificationController::class, 'index'])->name('notifications');
     Route::post('/notifications/{notification}/mark-as-read', [PatientNotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
     Route::post('/notifications/mark-all-as-read', [PatientNotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
     Route::delete('/notifications/{notification}', [PatientNotificationController::class, 'destroy'])->name('notifications.destroy');
     Route::get('/notifications/unread-count', [PatientNotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
-    
+
     // RDV
     Route::get('/demander-rdv', [DemandeRdvController::class, 'create'])->name('demander-rdv');
     Route::post('/demander-rdv', [DemandeRdvController::class, 'store'])->name('demander-rdv.store');
@@ -85,45 +85,45 @@ Route::middleware(['auth', 'role:PATIENT'])->prefix('patient')->name('patient.')
     Route::post('/rendez-vous/{rendezVous}/annuler', [PatientDashboardController::class, 'annulerRdv'])->name('rendezvous.annuler');
     Route::get('/rendez-vous/{rendezVous}/reprogrammer', [PatientDashboardController::class, 'reprogrammerRdv'])->name('rendezvous.reprogrammer');
     Route::patch('/rendez-vous/{rendezVous}/update', [PatientDashboardController::class, 'updateRdv'])->name('rendezvous.update');
-    
+
     // Factures et paiements
     Route::get('/factures', [PatientDashboardController::class, 'factures'])->name('factures');
     Route::get('/facture/{facture}', [PatientDashboardController::class, 'showFacture'])->name('facture.show');
     Route::get('/paiement/{facture}', [PatientDashboardController::class, 'paiement'])->name('paiement');
     Route::post('/paiement/{facture}', [PatientDashboardController::class, 'traiterPaiement'])->name('paiement.traiter');
-    
+
     // Messagerie
-    Route::get('/messagerie', [\App\Http\Controllers\Patient\ChatController::class, 'index'])->name('messagerie.index');
+    Route::get('/messagerie', [\app\Http\Controllers\Patient\ChatController::class, 'index'])->name('messagerie.index');
     Route::prefix('messagerie')->name('messagerie.')->group(function () {
-        Route::get('/conversations', [\App\Http\Controllers\Patient\ChatController::class, 'conversations'])->name('conversations');
-        Route::post('/conversations', [\App\Http\Controllers\Patient\ChatController::class, 'storeConversation'])->name('conversations.store');
-        Route::get('/conversations/{conversation}', [\App\Http\Controllers\Patient\ChatController::class, 'show'])->name('conversations.show');
-        Route::post('/conversations/{conversation}/messages', [\App\Http\Controllers\Patient\ChatController::class, 'storeMessage'])->name('conversations.messages.store');
-        Route::post('/conversations/{conversation}/read', [\App\Http\Controllers\Patient\ChatController::class, 'markAsRead'])->name('conversations.read');
-        Route::post('/conversations/{conversation}/archive', [\App\Http\Controllers\Patient\ChatController::class, 'archive'])->name('conversations.archive');
+        Route::get('/conversations', [\app\Http\Controllers\Patient\ChatController::class, 'conversations'])->name('conversations');
+        Route::post('/conversations', [\app\Http\Controllers\Patient\ChatController::class, 'storeConversation'])->name('conversations.store');
+        Route::get('/conversations/{conversation}', [\app\Http\Controllers\Patient\ChatController::class, 'show'])->name('conversations.show');
+        Route::post('/conversations/{conversation}/messages', [\app\Http\Controllers\Patient\ChatController::class, 'storeMessage'])->name('conversations.messages.store');
+        Route::post('/conversations/{conversation}/read', [\app\Http\Controllers\Patient\ChatController::class, 'markAsRead'])->name('conversations.read');
+        Route::post('/conversations/{conversation}/archive', [\app\Http\Controllers\Patient\ChatController::class, 'archive'])->name('conversations.archive');
     });
 
     // Calendrier
-    Route::get('/calendrier', [\App\Http\Controllers\Patient\CalendrierController::class, 'index'])->name('calendrier');
-    Route::get('/calendrier/events', [\App\Http\Controllers\Patient\CalendrierController::class, 'getEvents'])->name('calendrier.events');
-    Route::get('/calendrier/export/ical', [\App\Http\Controllers\Patient\CalendrierController::class, 'exportIcal'])->name('calendrier.export.ical');
-    Route::get('/calendrier/export/google', [\App\Http\Controllers\Patient\CalendrierController::class, 'exportGoogle'])->name('calendrier.export.google');
-    
+    Route::get('/calendrier', [\app\Http\Controllers\Patient\CalendrierController::class, 'index'])->name('calendrier');
+    Route::get('/calendrier/events', [\app\Http\Controllers\Patient\CalendrierController::class, 'getEvents'])->name('calendrier.events');
+    Route::get('/calendrier/export/ical', [\app\Http\Controllers\Patient\CalendrierController::class, 'exportIcal'])->name('calendrier.export.ical');
+    Route::get('/calendrier/export/google', [\app\Http\Controllers\Patient\CalendrierController::class, 'exportGoogle'])->name('calendrier.export.google');
+
     // Historique paiements
-    Route::get('/paiements', [\App\Http\Controllers\Patient\PaiementController::class, 'index'])->name('paiements.index');
-    Route::get('/paiements/{paiement}', [\App\Http\Controllers\Patient\PaiementController::class, 'show'])->name('paiements.show');
-    Route::get('/paiements/{paiement}/recu', [\App\Http\Controllers\Patient\PaiementController::class, 'downloadRecu'])->name('paiements.recu');
-    
+    Route::get('/paiements', [\app\Http\Controllers\Patient\PaiementController::class, 'index'])->name('paiements.index');
+    Route::get('/paiements/{paiement}', [\app\Http\Controllers\Patient\PaiementController::class, 'show'])->name('paiements.show');
+    Route::get('/paiements/{paiement}/recu', [\app\Http\Controllers\Patient\PaiementController::class, 'downloadRecu'])->name('paiements.recu');
+
     // Documents médicaux
-    Route::get('/documents', [\App\Http\Controllers\Patient\DocumentController::class, 'index'])->name('documents.index');
-    Route::get('/documents/{document}/download', [\App\Http\Controllers\Patient\DocumentController::class, 'downloadDocument'])->name('documents.download');
-    Route::get('/documents/ordonnance/{ordonnance}/download', [\App\Http\Controllers\Patient\DocumentController::class, 'downloadOrdonnance'])->name('documents.ordonnance.download');
-    Route::get('/documents/examen/{examen}/download', [\App\Http\Controllers\Patient\DocumentController::class, 'downloadExamen'])->name('documents.examen.download');
-    Route::get('/documents/certificat/generate', [\App\Http\Controllers\Patient\DocumentController::class, 'generateCertificat'])->name('documents.certificat.generate');
-    Route::get('/documents/attestation/{consultation}', [\App\Http\Controllers\Patient\DocumentController::class, 'generateAttestation'])->name('documents.attestation.generate');
-    
+    Route::get('/documents', [\app\Http\Controllers\Patient\DocumentController::class, 'index'])->name('documents.index');
+    Route::get('/documents/{document}/download', [\app\Http\Controllers\Patient\DocumentController::class, 'downloadDocument'])->name('documents.download');
+    Route::get('/documents/ordonnance/{ordonnance}/download', [\app\Http\Controllers\Patient\DocumentController::class, 'downloadOrdonnance'])->name('documents.ordonnance.download');
+    Route::get('/documents/examen/{examen}/download', [\app\Http\Controllers\Patient\DocumentController::class, 'downloadExamen'])->name('documents.examen.download');
+    Route::get('/documents/certificat/generate', [\app\Http\Controllers\Patient\DocumentController::class, 'generateCertificat'])->name('documents.certificat.generate');
+    Route::get('/documents/attestation/{consultation}', [\app\Http\Controllers\Patient\DocumentController::class, 'generateAttestation'])->name('documents.attestation.generate');
+
     // Suivi santé (lecture seule - rempli par le praticien)
-    Route::get('/suivi-sante', [\App\Http\Controllers\Patient\SuiviSanteController::class, 'index'])->name('suivi-sante.index');
+    Route::get('/suivi-sante', [\app\Http\Controllers\Patient\SuiviSanteController::class, 'index'])->name('suivi-sante.index');
 });
 
 // Routes PRATICIEN
@@ -135,12 +135,12 @@ Route::middleware(['auth', 'role:PRATICIEN'])->prefix('praticien')->name('pratic
     Route::get('/mes-documents', [PraticienDashboardController::class, 'documents'])->name('documents');
     Route::get('/mon-agenda', [PraticienDashboardController::class, 'agenda'])->name('agenda');
     Route::prefix('messages')->name('messages.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Praticien\ChatController::class, 'index'])->name('index');
-        Route::get('/conversations', [\App\Http\Controllers\Praticien\ChatController::class, 'conversations'])->name('conversations');
-        Route::post('/conversations', [\App\Http\Controllers\Praticien\ChatController::class, 'storeConversation'])->name('conversations.store');
-        Route::get('/conversations/{conversation}', [\App\Http\Controllers\Praticien\ChatController::class, 'show'])->name('conversations.show');
-        Route::post('/conversations/{conversation}/messages', [\App\Http\Controllers\Praticien\ChatController::class, 'storeMessage'])->name('conversations.messages.store');
-        Route::post('/conversations/{conversation}/read', [\App\Http\Controllers\Praticien\ChatController::class, 'markAsRead'])->name('conversations.read');
+        Route::get('/', [\app\Http\Controllers\Praticien\ChatController::class, 'index'])->name('index');
+        Route::get('/conversations', [\app\Http\Controllers\Praticien\ChatController::class, 'conversations'])->name('conversations');
+        Route::post('/conversations', [\app\Http\Controllers\Praticien\ChatController::class, 'storeConversation'])->name('conversations.store');
+        Route::get('/conversations/{conversation}', [\app\Http\Controllers\Praticien\ChatController::class, 'show'])->name('conversations.show');
+        Route::post('/conversations/{conversation}/messages', [\app\Http\Controllers\Praticien\ChatController::class, 'storeMessage'])->name('conversations.messages.store');
+        Route::post('/conversations/{conversation}/read', [\app\Http\Controllers\Praticien\ChatController::class, 'markAsRead'])->name('conversations.read');
     });
     Route::get('/disponibilites', [DisponibiliteController::class, 'index'])->name('disponibilites');
     Route::post('/disponibilites', [DisponibiliteController::class, 'store'])->name('disponibilites.store');
@@ -178,12 +178,12 @@ Route::middleware(['auth', 'role:SECRETAIRE'])->prefix('secretaire')->name('secr
     Route::get('/encaissements', [SecretaireDashboardController::class, 'encaissements'])->name('encaissements');
 
     Route::prefix('messages')->name('messages.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Secretaire\ChatController::class, 'index'])->name('index');
-        Route::get('/conversations', [\App\Http\Controllers\Secretaire\ChatController::class, 'conversations'])->name('conversations');
-        Route::post('/conversations', [\App\Http\Controllers\Secretaire\ChatController::class, 'storeConversation'])->name('conversations.store');
-        Route::get('/conversations/{conversation}', [\App\Http\Controllers\Secretaire\ChatController::class, 'show'])->name('conversations.show');
-        Route::post('/conversations/{conversation}/messages', [\App\Http\Controllers\Secretaire\ChatController::class, 'storeMessage'])->name('conversations.messages.store');
-        Route::post('/conversations/{conversation}/read', [\App\Http\Controllers\Secretaire\ChatController::class, 'markAsRead'])->name('conversations.read');
+        Route::get('/', [\app\Http\Controllers\Secretaire\ChatController::class, 'index'])->name('index');
+        Route::get('/conversations', [\app\Http\Controllers\Secretaire\ChatController::class, 'conversations'])->name('conversations');
+        Route::post('/conversations', [\app\Http\Controllers\Secretaire\ChatController::class, 'storeConversation'])->name('conversations.store');
+        Route::get('/conversations/{conversation}', [\app\Http\Controllers\Secretaire\ChatController::class, 'show'])->name('conversations.show');
+        Route::post('/conversations/{conversation}/messages', [\app\Http\Controllers\Secretaire\ChatController::class, 'storeMessage'])->name('conversations.messages.store');
+        Route::post('/conversations/{conversation}/read', [\app\Http\Controllers\Secretaire\ChatController::class, 'markAsRead'])->name('conversations.read');
     });
 
     Route::get('/relances', [ReminderController::class, 'index'])->name('relances.index');

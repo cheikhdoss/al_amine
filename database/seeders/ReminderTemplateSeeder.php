@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ReminderTemplate;
+use app\Models\ReminderTemplate;
 use Illuminate\Database\Seeder;
 
 class ReminderTemplateSeeder extends Seeder

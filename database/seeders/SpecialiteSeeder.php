@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Specialite;
+use app\Models\Specialite;
 
 class SpecialiteSeeder extends Seeder
 {

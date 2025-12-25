@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Patient;
-use App\Models\Praticien;
-use App\Models\RendezVous;
-use App\Models\Consultation;
-use App\Models\Ordonnance;
+use app\Models\User;
+use app\Models\Patient;
+use app\Models\Praticien;
+use app\Models\RendezVous;
+use app\Models\Consultation;
+use app\Models\Ordonnance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;

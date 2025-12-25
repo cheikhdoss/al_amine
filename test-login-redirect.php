@@ -16,7 +16,7 @@ echo "TEST DE REDIRECTION APRÈS LOGIN\n";
 echo "========================================\n\n";
 
 // Test avec l'admin
-$admin = App\Models\User::where('email', 'admin@alamine.sn')->first();
+$admin = \app\Models\User::where('email', 'admin@alamine.sn')->first();
 
 if (!$admin) {
     echo "❌ ERREUR: Admin non trouvé!\n";
@@ -44,7 +44,7 @@ echo "Route calculée: {$redirectRoute}\n";
 try {
     $url = route($redirectRoute);
     echo "URL de redirection: {$url}\n\n";
-    
+
     // Vérifier que c'est bien l'URL admin
     if (strpos($url, '/admin/dashboard') !== false) {
         echo "✅ SUCCESS: La redirection pointe bien vers /admin/dashboard\n";
@@ -63,7 +63,7 @@ echo "\n----------------------------------------\n";
 echo "Test avec un utilisateur PRATICIEN\n";
 echo "----------------------------------------\n\n";
 
-$praticien = App\Models\User::where('role', 'PRATICIEN')->first();
+$praticien = \app\Models\User::where('role', 'PRATICIEN')->first();
 
 if ($praticien) {
     $redirectRoute = match ($praticien->role) {
@@ -73,12 +73,12 @@ if ($praticien) {
         'SECRETAIRE' => 'secretaire.dashboard',
         default => 'patient.dashboard',
     };
-    
+
     $url = route($redirectRoute);
     echo "Praticien: {$praticien->email}\n";
     echo "Route: {$redirectRoute}\n";
     echo "URL: {$url}\n";
-    
+
     if (strpos($url, '/praticien/dashboard') !== false) {
         echo "✅ OK: Le praticien est bien redirigé vers /praticien/dashboard\n";
     }

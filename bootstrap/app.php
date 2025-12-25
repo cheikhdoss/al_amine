@@ -13,9 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => \App\Http\Middleware\CheckRole::class,
+            'role' => \app\Http\Middleware\CheckRole::class,
         ]);
-        
+
         // Exclure les routes PayDunya du CSRF pour les webhooks
         $middleware->validateCsrfTokens(except: [
             'paydunya/*',

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Patient\StripeController;
+use app\Http\Controllers\Patient\StripeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:PATIENT'])->prefix('patient')->name('patient.')->group(function () {

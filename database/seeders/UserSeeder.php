@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Patient;
-use App\Models\Praticien;
-use App\Models\Secretaire;
-use App\Models\Specialite;
+use app\Models\User;
+use app\Models\Patient;
+use app\Models\Praticien;
+use app\Models\Secretaire;
+use app\Models\Specialite;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder

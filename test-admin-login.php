@@ -8,7 +8,7 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 // Test de la logique de redirection
-$admin = App\Models\User::where('email', 'admin@alamine.sn')->first();
+$admin = \app\Models\User::where('email', 'admin@alamine.sn')->first();
 
 if (!$admin) {
     echo "❌ Aucun utilisateur admin trouvé avec l'email admin@alamine.sn\n";
@@ -50,7 +50,7 @@ $adminDashboardRoute = $routes->getByName('admin.dashboard');
 if ($adminDashboardRoute) {
     $middleware = $adminDashboardRoute->middleware();
     echo "   Middlewares sur admin.dashboard: " . implode(', ', $middleware) . "\n";
-    
+
     // Chercher le middleware role
     foreach ($middleware as $mw) {
         if (strpos($mw, 'role') !== false) {

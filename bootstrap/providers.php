@@ -1,7 +1,7 @@
 <?php
 
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\BroadcastServiceProvider::class,
-    App\Providers\ReverbServiceProvider::class,
+    \app\Providers\AppServiceProvider::class,
+    \app\Providers\BroadcastServiceProvider::class,
+    \app\Providers\ReverbServiceProvider::class,
 ];
